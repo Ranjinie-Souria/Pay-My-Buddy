@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "bankAccountTransaction")
+@Table(name = "bankaccounttransaction")
 public class BankAccountTransaction {
 
 	@Id
@@ -30,8 +30,9 @@ public class BankAccountTransaction {
 	
 	@Column(name="description")
 	private String description;
-	
+
 	@ManyToOne(
+			targetEntity = User.class,
 			cascade = { 
 					CascadeType.PERSIST, 
 					CascadeType.MERGE 

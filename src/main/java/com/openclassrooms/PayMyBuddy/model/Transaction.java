@@ -1,13 +1,10 @@
 package com.openclassrooms.PayMyBuddy.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -33,14 +30,5 @@ public class Transaction {
 	
 	@Column(name="description")
 	private String description;
-	
-	@ManyToOne(
-			cascade = { 
-					CascadeType.PERSIST, 
-					CascadeType.MERGE 
-					}
-			)
-	@JoinColumn(name="iduser")
-	private int idUser;
 
 }
