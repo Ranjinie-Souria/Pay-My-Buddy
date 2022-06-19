@@ -8,9 +8,9 @@ import com.openclassrooms.PayMyBuddy.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-	Iterable<User> findByEmail(String name);
+	public Iterable<User> findByEmail(String name);
 
-	Iterable<User> findByUsername(String name);
+	public Iterable<User> findByUsername(String name);
 	
 	
 
