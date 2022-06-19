@@ -27,5 +27,11 @@ public class UserController {
 		System.out.println(userService.getUserById(0));
 		return "home";
 	}
+	
+	@GetMapping("/profile")
+	public String profile() {
+		System.out.println("Hello user");
+		return "home";
+	}
 
 }
