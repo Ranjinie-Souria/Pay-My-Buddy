@@ -11,8 +11,6 @@ import com.openclassrooms.PayMyBuddy.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	public Optional<User> findByEmail(String name);
-
-	public Optional<User> findByUsername(String name);
 	
 	
 

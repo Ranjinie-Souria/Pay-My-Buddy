@@ -22,6 +22,17 @@ import lombok.Data;
 @Table(name = "user")
 public class User {
 	
+	public User(String username, String email, String password, String balance) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.balance = balance;
+	}
+	
+	public User() {
+		
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="iduser")
