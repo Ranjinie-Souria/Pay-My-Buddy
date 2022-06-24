@@ -31,7 +31,9 @@ public class MyUserDetails implements UserDetails{
 		this.connections = user.getConnections();
 	}
 	
-	public MyUserDetails() {
+	public MyUserDetails(String username, String email) {
+		this.username = username;
+		this.email = email;
 	}
 
 

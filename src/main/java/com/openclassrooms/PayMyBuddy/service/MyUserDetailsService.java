@@ -13,30 +13,32 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.PayMyBuddy.dto.UserRegistrationDto;
 import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService{
 	
 	@Autowired
-	UserService userService;
+	UserRepository userService;
 	
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-				
-		Optional<User> user = userService.getUserByEmail(email);
-		
+		System.out.println(username);
+		Optional<User> user = userService.findByEmail(username);
 
 		 if (user.isPresent()) {
+			 System.out.println("USER FOUND");
 			 return new org.springframework.security.core.userdetails.User(
 					 user.get().getEmail(),
 					 user.get().getPassword(),
 					 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))); 
 		}
 		 else {
-			 throw new UsernameNotFoundException("This email is not registered : "+email);
+			 System.out.println("USER NOT FOUND");
+			 throw new UsernameNotFoundException("This email is not registered : "+username);
 		 }
 	
 	}
@@ -45,7 +47,7 @@ public class MyUserDetailsService implements UserDetailsService{
         User user = new User(registrationDto.getUsername(), registrationDto.getEmail(),
             passwordEncoder.encode(registrationDto.getPassword()), "0");
 
-        return userService.saveUser(user);
+        return userService.save(user);
     }
 
 }

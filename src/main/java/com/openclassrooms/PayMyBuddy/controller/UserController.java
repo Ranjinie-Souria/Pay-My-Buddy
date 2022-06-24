@@ -34,6 +34,13 @@ public class UserController {
     }
 	
 	@GetMapping("/login")
+	public String showLoginForm() {
+		return "login";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST
+            ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
+    )
 	public String login() {
 		return "login";
 	}
