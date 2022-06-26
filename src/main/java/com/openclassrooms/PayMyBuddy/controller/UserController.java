@@ -28,23 +28,30 @@ public class UserController {
     public String home(ModelMap model) {
 		System.out.println(userService.getUsers());
 		model.addAttribute("header", "header");
+		model.addAttribute("footer", "footer");
         return "home";
     }
 	
 	@GetMapping("/login")
-	public String showLoginForm() {
+	public String showLoginForm(ModelMap model) {
+		model.addAttribute("header", "header");
+		model.addAttribute("footer", "footer");
 		return "login";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
-	public String login() {
+	public String login(ModelMap model) {
+		model.addAttribute("header", "header");
+		model.addAttribute("footer", "footer");
 		return "login";
 	}
 	
 	@GetMapping("/registration")
-	public String showRegistrationForm() {
+	public String showRegistrationForm(ModelMap model) {
+		model.addAttribute("header", "header");
+		model.addAttribute("footer", "footer");
 		return "register";
 	}
 	
@@ -62,7 +69,9 @@ public class UserController {
     }
 	
 	@GetMapping("/profile")
-	public String profile() {
+	public String profile(ModelMap model) {
+		model.addAttribute("header", "header");
+		model.addAttribute("footer", "footer");
 		System.out.println("Hello user");
 		return "home";
 	}
