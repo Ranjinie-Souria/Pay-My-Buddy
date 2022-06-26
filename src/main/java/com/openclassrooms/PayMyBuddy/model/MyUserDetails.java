@@ -13,6 +13,11 @@ import lombok.Data;
 @Data
 public class MyUserDetails implements UserDetails{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String username;
 	
 	private String password;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -50,6 +51,7 @@ public class User {
 	@Column(name="balance")
 	private String balance;
 	
+	@ElementCollection(targetClass=User.class)
 	@ManyToMany(
 			fetch = FetchType.LAZY,
 			cascade = { 

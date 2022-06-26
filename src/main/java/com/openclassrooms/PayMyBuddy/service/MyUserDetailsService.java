@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.PayMyBuddy.dto.UserRegistrationDto;
+import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
 import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
@@ -25,19 +26,13 @@ public class MyUserDetailsService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		System.out.println(username);
-		Optional<User> user = userService.findByEmail(username);
 
+		Optional<User> user = userService.findByEmail(username);
 		 if (user.isPresent()) {
-			 System.out.println("USER FOUND");
-			 return new org.springframework.security.core.userdetails.User(
-					 user.get().getEmail(),
-					 user.get().getPassword(),
-					 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))); 
+			 // User with the given email is found
+			 return new MyUserDetails(user.get());
 		}
 		 else {
-			 System.out.println("USER NOT FOUND");
 			 throw new UsernameNotFoundException("This email is not registered : "+username);
 		 }
 	
