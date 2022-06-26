@@ -55,13 +55,6 @@ public class UserController {
         return new UserRegistrationDto();
     }
 	
-	/*@PostMapping("/register")
-	public String registerUser(@RequestBody User person) {
-		userDetail.save(person);
-		System.out.println(userDetail.loadUserByUsername(person.getEmail()));
-		return "home";
-	}*/
-    
     @RequestMapping(value = "/registration", method = RequestMethod.POST
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
