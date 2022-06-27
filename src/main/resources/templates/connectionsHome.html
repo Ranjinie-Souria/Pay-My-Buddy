@@ -1,5 +1,12 @@
 <div th:replace="@{${header}} :: ${header}">
 </div>
+<br><br><br>
+
+<div th:if="${connection.empty}">You have no saved connections <div>
+<select class="form-control" id="dropDownList">
+    <option value="0">Select connection</option>
+    <option th:each="connections : ${connection}" th:value="${connection}" th:text="${connection}"></option>
+</select>
 
 <div th:replace="@{${footer}} :: ${footer}">
 </div>

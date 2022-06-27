@@ -20,19 +20,19 @@
      <div th:if="${param.logout}">
       <div class="alert alert-info">You have been logged out.</div>
      </div>
-     
+     <br>
      <div class = "form-group">
-      <label for ="username"> Email </label> :
+      <label for ="username"> Email</label>:
       <input type="text" class = "form-control" id ="username" name = "username"
       placeholder="Enter Email" autofocus="autofocus">
      </div>
-     
+     <br>
      <div class="form-group">
       <label for="password">Password</label>: <input type="password"
        id="password" name="password" class="form-control"
        placeholder="Enter Password" />
      </div>
-     
+     <br>
      <div class="form-group">
       <div class="row">
        <div class="col-sm-6 col-sm-offset-3">
@@ -41,10 +41,10 @@
        </div>
       </div>
      </div>
-    </form>
+    </form><br>
     <div class="form-group">
       <span>New user? <a href="/" th:href="@{/registration}">Register
-        here</a></span>
+        here</a></span><br>
     </div>
    </div>
   </div>

@@ -24,18 +24,18 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+
+	
 	@GetMapping("/")
     public String home(ModelMap model) {
 		System.out.println(userService.getUsers());
-		model.addAttribute("header", "header");
-		model.addAttribute("footer", "footer");
+		AddHTML.addFooterHeader(model);
         return "home";
     }
 	
 	@GetMapping("/login")
 	public String showLoginForm(ModelMap model) {
-		model.addAttribute("header", "header");
-		model.addAttribute("footer", "footer");
+		AddHTML.addFooterHeader(model);
 		return "login";
 	}
 	
@@ -43,15 +43,13 @@ public class UserController {
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
 	public String login(ModelMap model) {
-		model.addAttribute("header", "header");
-		model.addAttribute("footer", "footer");
+		AddHTML.addFooterHeader(model);
 		return "login";
 	}
 	
 	@GetMapping("/registration")
 	public String showRegistrationForm(ModelMap model) {
-		model.addAttribute("header", "header");
-		model.addAttribute("footer", "footer");
+		AddHTML.addFooterHeader(model);
 		return "register";
 	}
 	
@@ -70,8 +68,7 @@ public class UserController {
 	
 	@GetMapping("/profile")
 	public String profile(ModelMap model) {
-		model.addAttribute("header", "header");
-		model.addAttribute("footer", "footer");
+		AddHTML.addFooterHeader(model);
 		System.out.println("Hello user");
 		return "home";
 	}
