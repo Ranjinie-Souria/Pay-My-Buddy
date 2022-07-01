@@ -1,24 +1,18 @@
 <div th:replace="@{${header}} :: ${header}">
 </div>
 <br><br><br>
-
+ <div class="container">
 <h1>Connections</h1>
+<br>
 
 <!-- success message -->
     <div th:if="${param.success}">
      <div class="alert alert-info">Connection successfully added</div>
     </div><br>
     
-
-<select class="form-control" id="dropDownList">
-    <option value="0">Select connection</option>
-    <option th:each="connections : ${connection}" th:value="${connection}" th:text="${connection}"></option>
-</select>
-
-<div th:if="${connection.empty}"><h2>You have no saved connections, you can add one by entering the email of a user.</h2><div>
+Add a Connection
 <br>
-
-<form th:action="@{/connection}" method="post">
+<form style="width:30%" th:action="@{/connection}" method="post">
 <div class="form-group">
       <label class="control-label" for="email">Other User's email:</label>
       <input name="email" class="form-control" th:value="*{email}" required autofocus="autofocus" />
@@ -28,5 +22,26 @@
      </div>
 </form>
 
+Your Connections
+
+<table style="width:30%" class="table table-striped table-dark">
+<thead><tr><th>Email</th></tr></thead>
+<tbody><tr><td  th:each="connections : ${connection}" th:text="${connection.get(0)}">Email</td></tr></tbody>
+</table>
+
+Make a new Transaction
+<br>
+<select style="width:30%" class="form-control" id="dropDownList">
+    <option value="0">Select a connection</option>
+    <option th:each="connections : ${connection}" th:value="${connection}" th:text="${connection.get(0)}"></option>
+</select>
+
+
+<br>
+
+
+<div th:if="${connection.empty}">You have no saved connections, you can add one by entering the email of a user.</div>
+
+</div>
 <div th:replace="@{${footer}} :: ${footer}">
 </div>
