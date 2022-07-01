@@ -2,11 +2,31 @@
 </div>
 <br><br><br>
 
-<div th:if="${connection.empty}">You have no saved connections <div>
+<h1>Connections</h1>
+
+<!-- success message -->
+    <div th:if="${param.success}">
+     <div class="alert alert-info">Connection successfully added</div>
+    </div><br>
+    
+
 <select class="form-control" id="dropDownList">
     <option value="0">Select connection</option>
     <option th:each="connections : ${connection}" th:value="${connection}" th:text="${connection}"></option>
 </select>
+
+<div th:if="${connection.empty}"><h2>You have no saved connections, you can add one by entering the email of a user.</h2><div>
+<br>
+
+<form th:action="@{/connection}" method="post">
+<div class="form-group">
+      <label class="control-label" for="email">Other User's email:</label>
+      <input name="email" class="form-control" th:value="*{email}" required autofocus="autofocus" />
+     </div>
+     <div class="form-group">
+      <button type="submit" class="btn btn-success">Add</button><br>
+     </div>
+</form>
 
 <div th:replace="@{${footer}} :: ${footer}">
 </div>

@@ -48,7 +48,15 @@ public class UserService {
 	public void addConnectionForEmail(String email, String friendEmail) {
 		if(email != friendEmail) {
 			User newFriend = userRepository.findByEmail(friendEmail).get();
-			userRepository.findByEmail(email).get().getConnections().add(newFriend);	
+			if(newFriend != null) {
+				userRepository.findByEmail(email).get().getConnections().add(newFriend);
+			}
+			else {
+				System.out.println("This email address is not used by any user.");
+			}
+		}
+		else {
+			System.out.println("Email address is the same as the authentificated user.");
 		}
 	}
 	
