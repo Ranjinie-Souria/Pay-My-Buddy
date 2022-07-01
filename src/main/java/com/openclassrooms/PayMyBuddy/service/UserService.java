@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.repository.ConnectionRepository;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
 @Service
@@ -15,6 +16,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ConnectionRepository connectionRepository;
 	
 	public Iterable<User> getUsers() {
 		return userRepository.findAll();
@@ -48,8 +52,9 @@ public class UserService {
 	public void addConnectionForEmail(String email, String friendEmail) {
 		if(email != friendEmail) {
 			User newFriend = userRepository.findByEmail(friendEmail).get();
+			User currentUser = userRepository.findByEmail(email).get();
 			if(newFriend != null) {
-				userRepository.findByEmail(email).get().getConnections().add(newFriend);
+				connectionRepository.addConnectionForId(currentUser.getIdUser(), newFriend.getIdUser());				
 			}
 			else {
 				System.out.println("This email address is not used by any user.");
