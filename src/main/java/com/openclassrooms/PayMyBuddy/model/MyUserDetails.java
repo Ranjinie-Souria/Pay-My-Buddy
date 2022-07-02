@@ -17,6 +17,8 @@ public class MyUserDetails implements UserDetails{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private int idUser;
 
 	private String username;
 	
@@ -29,6 +31,7 @@ public class MyUserDetails implements UserDetails{
 	private List<User> connections;
 	
 	public MyUserDetails(User user) {
+		this.idUser = user.getIdUser();
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.email = user.getEmail();

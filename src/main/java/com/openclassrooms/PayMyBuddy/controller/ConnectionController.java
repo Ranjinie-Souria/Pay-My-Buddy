@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
-import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
@@ -42,6 +41,7 @@ public class ConnectionController {
     	userService.addConnectionForEmail(currentUser.getEmail(), email);
     	return "redirect:/connection?success";
     }
+
 	
 	
 

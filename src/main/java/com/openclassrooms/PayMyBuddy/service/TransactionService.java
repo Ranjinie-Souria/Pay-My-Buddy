@@ -14,6 +14,9 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	public Iterable<Transaction> getTransactions() {
 		return transactionRepository.findAll();
 	}
@@ -21,8 +24,7 @@ public class TransactionService {
 	public Optional<Transaction> getTransactionById(Integer id) {
 		return transactionRepository.findById(id);
 	}
-	
-	
+
 	public Transaction saveTransaction(Transaction transaction) {
 		return transactionRepository.save(transaction);		
 	}
@@ -30,5 +32,12 @@ public class TransactionService {
 	public void deleteTransactionById(Integer id) {
 		transactionRepository.deleteById(id);
 	}
+	
+	public void makeATransaction(String senderEmail,String receiverEmail,String amount,String description,int idUser) {
+		userService.updateAmount(idUser, amount, amount);
+		transactionRepository.saveTransaction(senderEmail,receiverEmail,amount,description,idUser);
+	}
+    
+
 
 }

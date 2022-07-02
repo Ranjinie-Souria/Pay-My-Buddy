@@ -10,6 +10,11 @@
      <div class="alert alert-info">Connection successfully added</div>
     </div><br>
     
+    <!-- success message -->
+    <div th:if="${param.transactionSuccess}">
+     <div class="alert alert-info">Transaction successfully made</div>
+    </div><br>
+    
 Add a Connection
 <br>
 <form style="width:30%" th:action="@{/connection}" method="post">
@@ -31,11 +36,25 @@ Your Connections
 
 Make a new Transaction
 <br>
+<form style="width:30%" th:action="@{/transaction}" method="post">
+<div class="form-group">
+<label class="control-label" for="connection">Connection:</label>
 <select style="width:30%" class="form-control" id="dropDownList">
     <option value="0">Select a connection</option>
     <option th:each="connections : ${connection}" th:value="${connection}" th:text="${connection.get(0)}"></option>
 </select>
+<br>
+<label class="control-label" for="amount">Amount:</label>
+<input name="amount" class="form-control" th:value="*{amount}" required autofocus="autofocus" />
+<br>
+<label class="control-label" for="description">Description:</label>
+<input name="description" class="form-control" th:value="*{description}" required autofocus="autofocus" />
+</div>
+<div class="form-group">
+      <button type="submit" class="btn btn-success">Create</button><br>
 
+</div>
+</form>
 
 <br>
 

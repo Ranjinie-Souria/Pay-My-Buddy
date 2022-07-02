@@ -71,5 +71,20 @@ public class UserService {
 			userRepository.findByEmail(email).get().getConnections().remove(newFriend);	
 		}
 	}
+	
+	public void updateAmount(int idUser,String amount, String theNewAmount) {
+		int newAmount = Integer.parseInt(theNewAmount);
+		int oldAmount = Integer.parseInt(amount);
+		int balance = oldAmount - newAmount;
+		String newBalance = String.valueOf(balance);
+		
+		Optional<User> userRepo = userRepository.findById(idUser);
+		User user = userRepo.get();
+		
+		user.setBalance(newBalance);
+		userRepository.save(user);
+	}
+	
+	
 
 }
