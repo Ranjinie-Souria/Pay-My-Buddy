@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,7 @@ public class ConnectionController {
 	
 	
 	@GetMapping("/connection")
-    public String showConnections(Authentication authentication,ModelMap model) {
+    public String showConnections(Authentication authentication,ModelMap model) {		
 		AddHTML.addFooterHeader(model);
 		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
 		List<User> connections = userService.getConnectionsForEmail(currentUser.getEmail());		

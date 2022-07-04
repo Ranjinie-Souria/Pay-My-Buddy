@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.PayMyBuddy.model.Transaction;
+import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.repository.TransactionRepository;
 
 @Service
@@ -35,7 +36,10 @@ public class TransactionService {
 	}
 	
 	public void makeATransaction(String senderEmail,String receiverEmail,String amount,String description,int idUser) {
-		userService.updateAmount(idUser, amount, amount);
+		User friend = userService.getUserByEmail(receiverEmail).get();
+		userService.getAmount(friend.getIdUser(), amount);
+		userService.sendAmount(idUser, amount);
+		
 		transactionRepository.saveTransaction(senderEmail,receiverEmail,amount,description,idUser);
 	}
 	

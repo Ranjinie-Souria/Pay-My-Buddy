@@ -2,7 +2,6 @@ package com.openclassrooms.PayMyBuddy.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,17 +77,26 @@ public class UserService {
 		}
 	}
 	
-	public void updateAmount(int idUser,String amount, String theNewAmount) {
-		int newAmount = Integer.parseInt(theNewAmount);
-		int oldAmount = Integer.parseInt(amount);
-		int balance = oldAmount - newAmount;
-		String newBalance = String.valueOf(balance);
-		
+	public void sendAmount(int idUser, String moneySent) {
 		Optional<User> userRepo = userRepository.findById(idUser);
 		User user = userRepo.get();
-		
-		user.setBalance(newBalance);
-		userRepository.save(user);
+		int sent = Integer.parseInt(moneySent);
+		int balance = Integer.parseInt(user.getBalance());
+		int newBalance = balance - sent;
+		String strBalance = String.valueOf(newBalance);
+		user.setBalance(strBalance);
+		userRepository.save(user);		
+	}
+	
+	public void getAmount(int idUser, String moneySent) {
+		Optional<User> userRepo = userRepository.findById(idUser);
+		User user = userRepo.get();
+		int sent = Integer.parseInt(moneySent);
+		int balance = Integer.parseInt(user.getBalance());
+		int newBalance = balance + sent;
+		String strBalance = String.valueOf(newBalance);
+		user.setBalance(strBalance);
+		userRepository.save(user);		
 	}
 
 	

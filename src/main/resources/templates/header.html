@@ -19,9 +19,9 @@
    
    	 <div>
       <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-     <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link active" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket"></i></i>&nbsp;Sign in</a></li>
+     <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link active" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;Sign in</a></li>
      
-      <li class="nav-item" sec:authorize="isAuthenticated()">Current Balance : <div th:text="${#authentication.getPrincipal().getBalance()}"></div>€</li>
+      <li class="nav-item" sec:authorize="isAuthenticated()">Current Balance : <div th:text="${#authentication.getPrincipal().getBalance()}">€</div></li>
      <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link active" th:href="@{/profile}">Profile</a></li>
           <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link active" th:href="@{/connection}">Connections and Transactions</a></li>
      <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link active" th:href="@{/logout}"><i class="fa-solid fa-left-to-bracket"></i>&nbsp;Logout</a></li>
