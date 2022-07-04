@@ -13,6 +13,11 @@
      <div class="alert alert-info">You've successfully registered
       to Pay My Buddy !</div>
     </div><br>
+    
+    <!-- success message -->
+    <div th:if="${param.DuplicateEmail}">
+     <div class="alert alert-danger">This email is already used, please log in or use another email</div>
+    </div><br>
 
     <h1>Registration</h1>
 

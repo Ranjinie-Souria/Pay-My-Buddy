@@ -37,10 +37,15 @@ public class MyUserDetailsService implements UserDetailsService{
 	}
 
     public User save(UserRegistrationDto registrationDto) {
-        User user = new User(registrationDto.getUsername(), registrationDto.getEmail(),
+    	try{
+    		User user = new User(registrationDto.getUsername(), registrationDto.getEmail(),
             passwordEncoder.encode(registrationDto.getPassword()), "0");
 
         return userService.save(user);
+    	}
+    	catch(Exception SQLIntegrityConstraintViolationException) {
+    		return null;
+    	}
     }
 
 }

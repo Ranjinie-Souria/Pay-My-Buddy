@@ -62,8 +62,14 @@ public class UserController {
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-    	userDetail.save(registrationDto);
-    	return "redirect:/registration?success";
+    	if(userDetail.save(registrationDto)!=null) {
+    		userDetail.save(registrationDto);
+    		return "redirect:/registration?success";
+    	}
+    	else {
+    		return "redirect:/registration?DuplicateEmail";
+    	}
+    	
     }
 	
 	@GetMapping("/profile")
