@@ -37,8 +37,14 @@ public class TransactionService {
 	
 	public void makeATransaction(String senderEmail,String receiverEmail,String amount,String description,int idUser) {
 		User friend = userService.getUserByEmail(receiverEmail).get();
-		userService.getAmount(friend.getIdUser(), amount);
 		userService.sendAmount(idUser, amount);
+		
+		double moneySent = Integer.parseInt(amount);
+		double fee = (moneySent * 0.005);
+		double moneyreceived = moneySent - fee;
+		
+		userService.getAmount(friend.getIdUser(), String.valueOf(moneyreceived));
+		//userService.getAmount(ID ADMIN, String.valueOf(fee));
 		
 		transactionRepository.saveTransaction(senderEmail,receiverEmail,amount,description,idUser);
 	}
