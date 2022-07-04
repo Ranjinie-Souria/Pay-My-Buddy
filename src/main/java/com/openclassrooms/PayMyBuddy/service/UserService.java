@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,29 +41,34 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 	
-	public List<String> getConnectionsForEmail(String email){
+	public List<User> getConnectionsForEmail(String email){
 		
-		List<String> connectionEmails = new ArrayList<String>();
+		List<User> connectionEmails = new ArrayList<User>();
 		for (User element : userRepository.findByEmail(email).get().getConnections()) {
-			connectionEmails.add(element.getEmail());
+			connectionEmails.add(element);
 		}
 		return connectionEmails;
 	}
 	
-	public void addConnectionForEmail(String email, String friendEmail) {
-		if(email != friendEmail) {
-			User newFriend = userRepository.findByEmail(friendEmail).get();
-			User currentUser = userRepository.findByEmail(email).get();
-			if(newFriend != null) {
-				connectionRepository.addConnectionForId(currentUser.getIdUser(), newFriend.getIdUser());				
+	public int addConnectionForEmail(String email, String friendEmail) {
+		if(!email.equals(friendEmail)) {
+			User newFriend = new User();
+			try {
+				newFriend = userRepository.findByEmail(friendEmail).get();
+				User currentUser = userRepository.findByEmail(email).get();
+				connectionRepository.addConnectionForId(currentUser.getIdUser(), newFriend.getIdUser());
+				return 1;
 			}
-			else {
-				System.out.println("This email address is not used by any user.");
+			catch(Exception NoSuchElementException){
+				return 2;
 			}
+			
 		}
-		else {
+		else{
 			System.out.println("Email address is the same as the authentificated user.");
+			return 0;
 		}
+		
 	}
 	
 	public void deleteConnectionForEmail(String email, String friendEmail) {
@@ -84,6 +90,8 @@ public class UserService {
 		user.setBalance(newBalance);
 		userRepository.save(user);
 	}
+
+	
 	
 	
 

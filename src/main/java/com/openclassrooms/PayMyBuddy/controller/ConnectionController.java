@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
+import com.openclassrooms.PayMyBuddy.model.Transaction;
+import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
@@ -21,15 +24,19 @@ public class ConnectionController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private TransactionService transactionService;
+	
 	
 	@GetMapping("/connection")
     public String showConnections(Authentication authentication,ModelMap model) {
 		AddHTML.addFooterHeader(model);
 		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
-		System.out.println(currentUser.getEmail());
-		List<String> connections = userService.getConnectionsForEmail(currentUser.getEmail());
-		System.out.println(connections);
+		List<User> connections = userService.getConnectionsForEmail(currentUser.getEmail());		
 		model.addAttribute("connection", connections);
+		//List<Transaction> transactions = transactionService.getTransactionsForEmail(currentUser.getEmail());
+		//System.out.println(transactions);
+		//model.addAttribute("transaction", transactions);
         return "connectionsHome";
     }
 	
@@ -38,8 +45,21 @@ public class ConnectionController {
     )
     public String addConnection(Authentication authentication,@RequestParam String email) {
     	MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
-    	userService.addConnectionForEmail(currentUser.getEmail(), email);
-    	return "redirect:/connection?success";
+    	int success = userService.addConnectionForEmail(currentUser.getEmail(), email);
+    	if(success == 1) {
+    		return "redirect:/connection?success";
+    	}
+    	else if(success == 0) {
+    		return "redirect:/connection?SameEmailError";
+    	}
+    	else if(success == 2) {
+    		return "redirect:/connection?UserNotFound";
+    	}
+    	else {
+    		return "redirect:/connection?UnknownError";
+    	}
+		
+    	
     }
 
 	

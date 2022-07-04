@@ -1,5 +1,6 @@
 package com.openclassrooms.PayMyBuddy.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,10 @@ public class TransactionService {
 	public void makeATransaction(String senderEmail,String receiverEmail,String amount,String description,int idUser) {
 		userService.updateAmount(idUser, amount, amount);
 		transactionRepository.saveTransaction(senderEmail,receiverEmail,amount,description,idUser);
+	}
+	
+	public List<Transaction> getTransactionsForEmail(String email) {
+		return transactionRepository.findBySenderEmail(email);
 	}
     
 

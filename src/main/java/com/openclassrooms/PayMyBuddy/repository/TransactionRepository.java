@@ -1,5 +1,7 @@
 package com.openclassrooms.PayMyBuddy.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	void saveTransaction(@Param("senderEmail") String senderEmail,@Param("receiverEmail") String receiverEmail,
 						@Param("amount") String amount,@Param("description") String description,
 						@Param("idUser") int idUser);
+
+
+	public List<Transaction> findBySenderEmail(String email);
 	
 	
 

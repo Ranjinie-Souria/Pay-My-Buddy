@@ -10,16 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
 import com.openclassrooms.PayMyBuddy.service.TransactionService;
-import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
 public class TransactionController {
 	
 	@Autowired
 	private TransactionService tService;
-	
-	@Autowired
-	private UserService userService;
 	
     @RequestMapping(value = "/transaction", method = RequestMethod.POST
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
