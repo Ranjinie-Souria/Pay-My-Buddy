@@ -36,15 +36,16 @@ public class TransactionService {
 	}
 	
 	public void makeATransaction(String senderEmail,String receiverEmail,String amount,String description,int idUser) {
+		
 		User friend = userService.getUserByEmail(receiverEmail).get();
-		userService.sendAmount(idUser, amount);
+		userService.setSendAmount(idUser, amount);
 		
 		double moneySent = Integer.parseInt(amount);
 		double fee = (moneySent * 0.005);
-		double moneyreceived = moneySent - fee;
+		double moneyReceived = moneySent - fee;
 		
-		userService.getAmount(friend.getIdUser(), String.valueOf(moneyreceived));
-		//userService.getAmount(ID ADMIN, String.valueOf(fee));
+		userService.setGetAmount(friend.getIdUser(), String.valueOf(moneyReceived));
+		userService.setGetAmount(1, String.valueOf(fee));
 		
 		transactionRepository.saveTransaction(senderEmail,receiverEmail,amount,description,idUser);
 	}

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.repository.ConnectionRepository;
@@ -77,26 +78,28 @@ public class UserService {
 		}
 	}
 	
-	public void sendAmount(int idUser, String moneySent) {
+	@Transactional
+	public void setSendAmount(int idUser, String moneySent) {
 		Optional<User> userRepo = userRepository.findById(idUser);
 		User user = userRepo.get();
-		int sent = Integer.parseInt(moneySent);
-		int balance = Integer.parseInt(user.getBalance());
-		int newBalance = balance - sent;
+		double sent = Double.parseDouble(moneySent);
+		double balance = Double.parseDouble(user.getBalance());
+		double newBalance = balance - sent;
 		String strBalance = String.valueOf(newBalance);
 		user.setBalance(strBalance);
 		userRepository.save(user);		
 	}
 	
-	public void getAmount(int idUser, String moneySent) {
+	@Transactional
+	public void setGetAmount(int idUser, String moneySent) {
 		Optional<User> userRepo = userRepository.findById(idUser);
 		User user = userRepo.get();
-		int sent = Integer.parseInt(moneySent);
-		int balance = Integer.parseInt(user.getBalance());
-		int newBalance = balance + sent;
+		double sent = Double.parseDouble(moneySent);
+		double balance = Double.parseDouble(user.getBalance());
+		double newBalance = balance + sent;
 		String strBalance = String.valueOf(newBalance);
 		user.setBalance(strBalance);
-		userRepository.save(user);		
+		userRepository.save(user);
 	}
 
 	
