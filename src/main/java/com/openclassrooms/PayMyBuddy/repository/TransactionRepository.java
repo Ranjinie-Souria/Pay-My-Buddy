@@ -23,7 +23,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 						@Param("idUser") int idUser);
 
 
-	public List<Transaction> findBySenderEmail(String email);
+	@Query(value="SELECT `transaction`.`idTransaction`,`transaction`.`receiverEmail`,`transaction`.`amount`,`transaction`.`description` FROM `paymybuddy`.transaction WHERE `senderEmail` = :senderEmail ", nativeQuery = true)
+	public List<Transaction> findBySenderEmail(@Param("senderEmail") String email);
 	
 	
 

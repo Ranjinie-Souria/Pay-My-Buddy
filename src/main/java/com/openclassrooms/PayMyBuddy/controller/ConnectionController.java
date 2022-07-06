@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
+import com.openclassrooms.PayMyBuddy.model.Transaction;
 import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
@@ -24,7 +26,6 @@ public class ConnectionController {
 	
 	//@Autowired
 	//private TransactionService transactionService;
-	
 	
 	@GetMapping("/connection")
     public String showConnections(Authentication authentication,ModelMap model) {		
@@ -52,6 +53,9 @@ public class ConnectionController {
     	}
     	else if(success == 2) {
     		return "redirect:/connection?UserNotFound";
+    	}
+    	else if(success == 3) {
+    		return "redirect:/connection?UserAlreadyHere";
     	}
     	else {
     		return "redirect:/connection?UnknownError";

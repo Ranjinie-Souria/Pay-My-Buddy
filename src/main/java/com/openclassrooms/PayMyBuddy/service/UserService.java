@@ -56,7 +56,13 @@ public class UserService {
 			try {
 				newFriend = userRepository.findByEmail(friendEmail).get();
 				User currentUser = userRepository.findByEmail(email).get();
-				connectionRepository.addConnectionForId(currentUser.getIdUser(), newFriend.getIdUser());
+				List<User> thisConnections = this.getConnectionsForEmail(email);
+				if(!thisConnections.contains(newFriend)) {
+					connectionRepository.addConnectionForId(currentUser.getIdUser(), newFriend.getIdUser());
+				}
+				else {
+					return 3;
+				}
 				return 1;
 			}
 			catch(Exception NoSuchElementException){

@@ -19,13 +19,18 @@
     <div th:if="${param.SameEmailError}">
      <div class="alert alert-danger">You can't add yourself as a connection !</div>
     </div><br>
+
+    <!-- error message -->
+    <div th:if="${param.UserAlreadyHere}">
+     <div class="alert alert-danger">This user's email is already added to your connections</div>
+    </div><br>
     
-        <!-- error message -->
+    <!-- error message -->
     <div th:if="${param.UserNotFound}">
      <div class="alert alert-danger">This user's email was not found, check for spellings errors</div>
     </div><br>
     
-        <!-- error message -->
+    <!-- error message -->
     <div th:if="${param.UnknownError}">
      <div class="alert alert-danger">An unknown error has occurred, please contact the administrators.</div>
     </div><br>
