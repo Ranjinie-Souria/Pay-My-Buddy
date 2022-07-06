@@ -24,8 +24,8 @@ public class ConnectionController {
 	@Autowired
 	private UserService userService;
 	
-	//@Autowired
-	//private TransactionService transactionService;
+	@Autowired
+	private TransactionService transactionService;
 	
 	@GetMapping("/connection")
     public String showConnections(Authentication authentication,ModelMap model) {		
@@ -33,9 +33,8 @@ public class ConnectionController {
 		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
 		List<User> connections = userService.getConnectionsForEmail(currentUser.getEmail());		
 		model.addAttribute("connection", connections);
-		//List<Transaction> transactions = transactionService.getTransactionsForEmail(currentUser.getEmail());
-		//System.out.println(transactions);
-		//model.addAttribute("transaction", transactions);
+		List<Transaction> transactions = transactionService.getTransactionsForEmail(currentUser.getEmail());
+		model.addAttribute("transaction", transactions);
         return "connectionsHome";
     }
 	

@@ -63,7 +63,7 @@ public class UserController {
     )
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
     	if(userDetail.save(registrationDto)!=null) {
-    		userDetail.save(registrationDto);
+    		//userDetail.save(registrationDto);
     		return "redirect:/registration?success";
     	}
     	else {

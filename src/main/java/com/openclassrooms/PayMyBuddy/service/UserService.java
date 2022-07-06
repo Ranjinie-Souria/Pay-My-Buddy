@@ -34,6 +34,7 @@ public class UserService {
 	}
 	
 	public User saveUser(User user) {
+		System.out.println("toto");
 		return userRepository.save(user);		
 	}
 	

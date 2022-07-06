@@ -46,12 +46,13 @@ public class TransactionService {
 		
 		userService.setGetAmount(friend.getIdUser(), String.valueOf(moneyReceived));
 		userService.setGetAmount(1, String.valueOf(fee));
-		
-		transactionRepository.saveTransaction(senderEmail,receiverEmail,amount,description,idUser);
+		Transaction transaction = new Transaction(senderEmail, receiverEmail, amount, description, friend);
+		transactionRepository.save(transaction);
 	}
 	
 	public List<Transaction> getTransactionsForEmail(String email) {
-		return transactionRepository.findBySenderEmail(email);
+		List<Transaction> listTransac = transactionRepository.findBySenderEmailOrReceiverEmail(email, email);
+		return listTransac;
 	}
     
 

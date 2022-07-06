@@ -81,19 +81,20 @@ Make a new Transaction
 </div>
 
 </form>
-<!--
+
 <div th:if="${transaction.empty}">You made no transaction, you can make one now by selecting the email of a user.</div>
 <div th:if="${!transaction.empty}">
 <table style="width:30%" class="table table-striped table-dark">
-<thead><tr><th>Sent to</th><th>Amount</th><th>Description</th></tr></thead>
+<thead><tr><th>From</th><th>Sent to</th><th>Amount</th><th>Description</th></tr></thead>
 <tbody><tr>
+<td  th:each="transactions : ${transaction}" th:text="${transactions.getSenderEmail()}"></td>
 <td  th:each="transactions : ${transaction}" th:text="${transactions.getReceiverEmail()}"></td>
 <td  th:each="transactions : ${transaction}" th:text="${transactions.getAmount()}"></td>
 <td  th:each="transactions : ${transaction}" th:text="${transactions.getDescription()}"></td>
 </tr></tbody>
 </table>
 </div>
-<br> -->
+<br>
 
 
 

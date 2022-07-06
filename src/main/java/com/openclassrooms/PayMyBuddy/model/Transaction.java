@@ -10,18 +10,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Transaction")
+@Table(name = "transaction")
 public class Transaction {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="idTransaction")
+	@Column(name="id_transaction")
 	private int idTransaction;
 	
-	@Column(name="senderEmail")
+	@Column(name="sender_email")
 	private String senderEmail;
 	
-	@Column(name="receiverEmail")
+	@Column(name="receive_email")
 	private String receiverEmail;
 	
 	@Column(name="amount")
@@ -34,65 +34,60 @@ public class Transaction {
 	@JoinColumn(name="iduser", nullable=false)
 	private User user;
 
-	@Column(name = "idTransaction")
-	public int getIdTransaction() {
-		return idTransaction;
-	}
-	
-	@Column(name = "idTransaction")
-	public void setIdTransaction(int idTransaction) {
-		this.idTransaction = idTransaction;
+	public Transaction(String senderEmail, String receiverEmail, String amount, String description, User user) {
+		this.senderEmail = senderEmail;
+		this.receiverEmail = receiverEmail;
+		this.amount = amount;
+		this.description = description;
+		this.user = user;
 	}
 
-	@Column(name = "senderEmail")
+	public Transaction () {
+		
+	}
+
 	public String getSenderEmail() {
 		return senderEmail;
 	}
 
-	@Column(name = "senderEmail")
 	public void setSenderEmail(String senderEmail) {
 		this.senderEmail = senderEmail;
 	}
-	
-	@Column(name = "receiverEmail")
+
 	public String getReceiverEmail() {
 		return receiverEmail;
 	}
 
-	@Column(name = "receiverEmail")
 	public void setReceiverEmail(String receiverEmail) {
 		this.receiverEmail = receiverEmail;
 	}
 
-	@Column(name = "amount")
 	public String getAmount() {
 		return amount;
 	}
 
-	@Column(name = "amount")
 	public void setAmount(String amount) {
 		this.amount = amount;
 	}
-	
-	@Column(name = "description")
+
 	public String getDescription() {
 		return description;
 	}
-	
-	@Column(name = "description")
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	@Column(name = "iduser")
+
 	public User getUser() {
 		return user;
 	}
-	
-	@Column(name = "iduser")
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	public int getIdTransaction() {
+		return idTransaction;
+	}
 
 }
