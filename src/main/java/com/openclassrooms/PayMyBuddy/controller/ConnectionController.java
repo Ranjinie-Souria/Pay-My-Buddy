@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
-import com.openclassrooms.PayMyBuddy.model.Transaction;
 import com.openclassrooms.PayMyBuddy.model.User;
-import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
@@ -24,8 +23,6 @@ public class ConnectionController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private TransactionService transactionService;
 	
 	@GetMapping("/connection")
     public String showConnections(Authentication authentication,ModelMap model) {		
@@ -33,18 +30,17 @@ public class ConnectionController {
 		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
 		List<User> connections = userService.getConnectionsForEmail(currentUser.getEmail());		
 		model.addAttribute("connection", connections);
-		List<Transaction> transactions = transactionService.getTransactionsForEmail(currentUser.getEmail());
-		model.addAttribute("transaction", transactions);
-        return "connectionsHome";
+        return "connections";
     }
 	
     @RequestMapping(value = "/connection", method = RequestMethod.POST
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
-    public String addConnection(Authentication authentication,@RequestParam String email) {
+    public String addConnection(@AuthenticationPrincipal MyUserDetails loggedUser,Authentication authentication,@RequestParam String email) {
     	MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
     	int success = userService.addConnectionForEmail(currentUser.getEmail(), email);
     	if(success == 1) {
+    		loggedUser.setConnections(currentUser.getConnections());
     		return "redirect:/connection?success";
     	}
     	else if(success == 0) {
