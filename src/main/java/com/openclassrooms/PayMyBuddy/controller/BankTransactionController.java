@@ -54,6 +54,7 @@ public class BankTransactionController {
     		return "redirect:/bankTransaction?transactionSuccess";
     	}
     	catch(Exception e) {
+    		System.out.println(e);
     		return "redirect:/bankTransaction?transactionError";
     	}
     }
