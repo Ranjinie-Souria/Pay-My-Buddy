@@ -80,7 +80,6 @@ public class UserController {
 	@GetMapping("/profile")
 	public String profile(ModelMap model) {
 		AddHTML.addFooterHeader(model);
-		System.out.println("Hello user");
 		return "home";
 	}
 

@@ -13,7 +13,7 @@
   <h2>Moving your money has never been easier</h2>
   <br><br>
     <div sec:authorize="!isAuthenticated()">
-      Sign up here, and make
+      <a th:href="@{/registration}">Sign up here</a>, and start moving your money right now !
   </div>
   <div sec:authorize="isAuthenticated()">
       Welcome <div th:text="${#authentication.getPrincipal().getEmail()}"></div>
