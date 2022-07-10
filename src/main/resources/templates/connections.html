@@ -47,7 +47,8 @@ Your Connections
 <div th:if="${!connection.empty}">
 <table style="width:30%" class="table table-striped table-dark">
 <thead><tr><th>Email</th></tr></thead>
-<tbody><tr  th:each="connections : ${connection}" ><td th:text="${connections.getEmail()}">Email</td></tr></tbody>
+<tbody><tr  th:each="connections : ${connection}" >
+<td th:text="${connections.getEmail()}">Email</td></tr></tbody>
 </table>
 </div>
 </div>

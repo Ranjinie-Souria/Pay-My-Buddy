@@ -9,6 +9,12 @@
     
     <h1> User Login Page </h1>
     <form th:action="@{/login}" method="post">
+    
+        <!-- success message -->
+    <div th:if="${param.success}">
+     <div class="alert alert-info">You've successfully registered
+      to Pay My Buddy ! You can log in now !</div>
+    </div><br>
      
      <!-- error message -->
      <div th:if="${param.error}">

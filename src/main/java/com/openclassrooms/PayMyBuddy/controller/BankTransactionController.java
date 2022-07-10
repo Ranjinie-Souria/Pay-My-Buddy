@@ -13,44 +13,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.openclassrooms.PayMyBuddy.model.BankAccountTransaction;
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
-import com.openclassrooms.PayMyBuddy.model.Transaction;
 import com.openclassrooms.PayMyBuddy.model.User;
-import com.openclassrooms.PayMyBuddy.service.TransactionService;
+import com.openclassrooms.PayMyBuddy.service.BankAccountTransactionService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
-public class TransactionController {
+public class BankTransactionController {
 	
 	@Autowired
-	private TransactionService tService;
+	private BankAccountTransactionService bankService;
 
 	@Autowired
 	private UserService uService;
 	
-	@GetMapping("/transaction")
+	@GetMapping("/bankTransaction")
     public String showTransactions(Authentication authentication,ModelMap model) {		
 		AddHTML.addFooterHeader(model);
 		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
-		List<User> connections = uService.getConnectionsForEmail(currentUser.getEmail());		
-		model.addAttribute("connection", connections);
-		List<Transaction> transactions = tService.getTransactionsForEmail(currentUser.getEmail());
+		List<BankAccountTransaction> transactions = bankService.getTransactionsForEmail(currentUser.getEmail());
 		model.addAttribute("transaction", transactions);
-        return "transactions";
+        return "banktransactions";
     }
 	
-    @RequestMapping(value = "/transaction", method = RequestMethod.POST
+    @RequestMapping(value = "/bankTransaction", method = RequestMethod.POST
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
-    public String addTransaction(@AuthenticationPrincipal MyUserDetails loggedUser,Authentication authentication,@RequestParam String email,@RequestParam String amount,@RequestParam String description) {
+    public String addTransaction(@AuthenticationPrincipal MyUserDetails loggedUser,Authentication authentication,@RequestParam String iban,@RequestParam String amount,@RequestParam String description) {
     	try {
     		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
-    		tService.makeATransaction(currentUser.getEmail(), email, amount, description, currentUser.getIdUser());
+    		User user = uService.getUserById(currentUser.getIdUser()).get();
+    		
+    		uService.setSendAmount(user.getIdUser(), amount);
+    		
+    		BankAccountTransaction transaction = new BankAccountTransaction(iban,amount,description, user);
+    		
+    		bankService.saveBankAccountTransaction(transaction);
     		loggedUser.setBalance(uService.getUserById(currentUser.getIdUser()).get().getBalance());
-    		return "redirect:/transaction?transactionSuccess";
+    		return "redirect:/bankTransaction?transactionSuccess";
     	}
     	catch(Exception e) {
-    		return "redirect:/transaction?transactionError";
+    		return "redirect:/bankTransaction?transactionError";
     	}
     }
 	

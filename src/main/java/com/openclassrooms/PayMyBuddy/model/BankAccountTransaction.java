@@ -39,5 +39,17 @@ public class BankAccountTransaction {
 					}
 			)
 	@JoinColumn(name="iduser")
-	private int idUser;
+	private User idUser;
+
+	public BankAccountTransaction(String bankAccount, String amount, String description, User idUser) {
+		this.bankAccount = bankAccount;
+		this.amount = amount;
+		this.description = description;
+		this.idUser = idUser;
+	}
+
+	public BankAccountTransaction() {
+	}
+	
+	
 }

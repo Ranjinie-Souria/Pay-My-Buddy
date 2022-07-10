@@ -1,5 +1,7 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.openclassrooms.PayMyBuddy.dto.UserRegistrationDto;
+import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.MyUserDetailsService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
@@ -62,9 +65,11 @@ public class UserController {
             ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-    	if(userDetail.save(registrationDto)!=null) {
-    		//userDetail.save(registrationDto);
-    		return "redirect:/registration?success";
+    	String email = registrationDto.getEmail();
+    	Optional<User> user = userService.getUserByEmail(email);
+    	if(user.isEmpty()) {
+    		userDetail.save(registrationDto);
+    		return "redirect:/login?success";
     	}
     	else {
     		return "redirect:/registration?DuplicateEmail";
