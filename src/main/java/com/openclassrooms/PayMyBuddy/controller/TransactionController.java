@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
 import com.openclassrooms.PayMyBuddy.model.Transaction;
 import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.service.CompareBalanceToTransaction;
 import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
@@ -45,9 +46,16 @@ public class TransactionController {
     public String addTransaction(@AuthenticationPrincipal MyUserDetails loggedUser,Authentication authentication,@RequestParam String email,@RequestParam String amount,@RequestParam String description) {
     	try {
     		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
-    		tService.makeATransaction(currentUser.getEmail(), email, amount, description, currentUser.getIdUser());
-    		loggedUser.setBalance(uService.getUserById(currentUser.getIdUser()).get().getBalance());
-    		return "redirect:/transaction?transactionSuccess";
+    		int idUser = currentUser.getIdUser();
+    		
+    		if(CompareBalanceToTransaction.hasEnoughMoney(amount, uService.getUserById(idUser).get().getBalance())) {
+    			tService.makeATransaction(currentUser.getEmail(), email, amount, description, idUser);
+    			loggedUser.setBalance(uService.getUserById(currentUser.getIdUser()).get().getBalance());
+    			return "redirect:/transaction?transactionSuccess";
+    		}
+    		
+    		return "redirect:/transaction?balanceError";
+    		
     	}
     	catch(Exception e) {
     		return "redirect:/transaction?transactionError";

@@ -38,16 +38,18 @@ public class TransactionService {
 	public void makeATransaction(String senderEmail,String receiverEmail,String amount,String description,int idUser) {
 		
 		User friend = userService.getUserByEmail(receiverEmail).get();
-		userService.setSendAmount(idUser, amount);
 		
 		double moneySent = Integer.parseInt(amount);
 		double fee = (moneySent * 0.005);
 		double moneyReceived = moneySent - fee;
 		
-		userService.setGetAmount(friend.getIdUser(), String.valueOf(moneyReceived));
-		userService.setGetAmount(1, String.valueOf(fee));
-		Transaction transaction = new Transaction(senderEmail, receiverEmail, amount, description, friend);
-		transactionRepository.save(transaction);
+			userService.setSendAmount(idUser, amount);
+			int admin = userService.getUserByEmail("admin@admin.com").get().getIdUser();
+			userService.setGetAmount(friend.getIdUser(), String.valueOf(moneyReceived));
+			userService.setGetAmount(admin, String.valueOf(fee));
+			Transaction transaction = new Transaction(senderEmail, receiverEmail, amount, description, friend);
+			transactionRepository.save(transaction);
+		
 	}
 	
 	public List<Transaction> getTransactionsForEmail(String email) {

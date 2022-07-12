@@ -30,6 +30,8 @@ public class BankAccountTransaction {
 	
 	@Column(name="description")
 	private String description;
+	
+	private Boolean fromBankTransaction;
 
 	@ManyToOne(
 			targetEntity = User.class,
@@ -46,9 +48,18 @@ public class BankAccountTransaction {
 		this.amount = amount;
 		this.description = description;
 		this.idUser = idUser;
+		this.fromBankTransaction = false;
 	}
 
 	public BankAccountTransaction() {
+	}
+
+	public BankAccountTransaction(String iban, String amount, User idUser) {
+		this.bankAccount = iban;
+		this.amount = amount;
+		this.description = "Transaction from bank account : "+iban;
+		this.fromBankTransaction = true;
+		this.idUser = idUser;
 	}
 	
 	

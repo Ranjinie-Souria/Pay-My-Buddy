@@ -14,9 +14,16 @@
      <div class="alert alert-danger">Please fill all the informations before making the transaction.</div>
     </div><br>
     
+      <!-- error message -->
+    <div th:if="${param.balanceError}">
+     <div class="alert alert-danger">You do not have enough money in your balance to make the transaction.</div>
+    </div><br>
+    
  <br>
 Make a new bank transaction
 <br>
+
+You can send money to a bank account here
 
 <form style="width:30%" th:action="@{/bankTransaction}" method="post">
 <div class="form-group">
@@ -31,6 +38,30 @@ Make a new bank transaction
 <br>
 <label class="control-label" for="description">Description:</label>
 <input name="description" class="form-control" th:value="*{description}" required autofocus="autofocus" />
+</div>
+<div class="form-group">
+      <button type="submit" class="btn btn-success">Create</button><br>
+
+</div>
+
+</form>
+
+Get money from a bank account
+
+<br>
+You can get money from a bank account here
+
+<form style="width:30%" th:action="@{/bankTransaction/get}" method="post">
+<div class="form-group">
+<label class="control-label" for="iban">IBAN :</label>
+<input name="iban" class="form-control" th:value="*{amount}" required autofocus="autofocus" />
+<br>
+<br>
+<label class="control-label" for="amount">Amount:</label>
+<input type="number" min="0.01" step="0.01" 
+         name="amount" 
+         class="form-control" th:value="*{amount}" required autofocus="autofocus" />
+<br>
 </div>
 <div class="form-group">
       <button type="submit" class="btn btn-success">Create</button><br>

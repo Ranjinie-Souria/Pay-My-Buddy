@@ -14,9 +14,15 @@
      <div class="alert alert-danger">Please fill all the informations before making the transaction.</div>
     </div><br>
     
+        <!-- error message -->
+    <div th:if="${param.balanceError}">
+     <div class="alert alert-danger">You do not have enough money in your balance to make the transaction.</div>
+    </div><br>
+    
  <br>
 Make a new Transaction
 <br>
+
 
 <form style="width:30%" th:action="@{/transaction}" method="post">
 <div class="form-group">

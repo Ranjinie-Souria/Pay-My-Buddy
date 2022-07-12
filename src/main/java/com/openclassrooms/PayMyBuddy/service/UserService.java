@@ -45,10 +45,15 @@ public class UserService {
 	public List<User> getConnectionsForEmail(String email){
 		
 		List<User> connectionEmails = new ArrayList<User>();
-		for (User element : userRepository.findByEmail(email).get().getConnections()) {
-			connectionEmails.add(element);
+		Optional<User> user = userRepository.findByEmail(email);
+		if (user.isPresent()) {
+			for (User element : user.get().getConnections()) {
+				connectionEmails.add(element);
+			}
+			return connectionEmails;
+		} else {
+			return null;
 		}
-		return connectionEmails;
 	}
 	
 	public int addConnectionForEmail(String email, String friendEmail) {

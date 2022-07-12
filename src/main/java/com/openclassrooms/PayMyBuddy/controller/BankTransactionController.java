@@ -17,6 +17,7 @@ import com.openclassrooms.PayMyBuddy.model.BankAccountTransaction;
 import com.openclassrooms.PayMyBuddy.model.MyUserDetails;
 import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.BankAccountTransactionService;
+import com.openclassrooms.PayMyBuddy.service.CompareBalanceToTransaction;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 
 @Controller
@@ -45,9 +46,37 @@ public class BankTransactionController {
     		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
     		User user = uService.getUserById(currentUser.getIdUser()).get();
     		
-    		uService.setSendAmount(user.getIdUser(), amount);
+    		if(CompareBalanceToTransaction.hasEnoughMoney(amount, user.getBalance())) {
+    			double moneySent = Double.parseDouble(amount);
+    			double fee = (moneySent * 0.005);
+    			double moneyReceived = moneySent - fee;
+    			uService.setSendAmount(user.getIdUser(), amount);
+    			BankAccountTransaction transaction = new BankAccountTransaction(iban, String.valueOf(moneyReceived),description, user);
+    			bankService.saveBankAccountTransaction(transaction);
+    			loggedUser.setBalance(uService.getUserById(currentUser.getIdUser()).get().getBalance());
+    			return "redirect:/bankTransaction?transactionSuccess";
+    		}
     		
-    		BankAccountTransaction transaction = new BankAccountTransaction(iban,amount,description, user);
+    		return "redirect:/bankTransaction?balanceError";
+    		
+    	}
+    	catch(Exception e) {
+    		System.out.println(e);
+    		return "redirect:/bankTransaction?transactionError";
+    	}
+    }
+	
+    @RequestMapping(value = "/bankTransaction/get", method = RequestMethod.POST
+            ,  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
+    )
+    public String getBankTransaction(@AuthenticationPrincipal MyUserDetails loggedUser,Authentication authentication,@RequestParam String iban,@RequestParam String amount) {
+    	try {
+    		MyUserDetails currentUser = CurrentUser.getCurrentUser(authentication);
+    		User user = uService.getUserById(currentUser.getIdUser()).get();
+    		
+    		uService.setGetAmount(user.getIdUser(), amount);
+    		
+    		BankAccountTransaction transaction = new BankAccountTransaction(iban,amount,user);
     		
     		bankService.saveBankAccountTransaction(transaction);
     		loggedUser.setBalance(uService.getUserById(currentUser.getIdUser()).get().getBalance());
@@ -58,6 +87,5 @@ public class BankTransactionController {
     		return "redirect:/bankTransaction?transactionError";
     	}
     }
-	
 
 }
