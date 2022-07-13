@@ -1,6 +1,7 @@
 package com.openclassrooms.PayMyBuddy.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -29,13 +30,27 @@ class UserServiceTest {
 	@Mock
 	private ConnectionRepository connectionRepository;
 
-	/*
-	 * @Test public void getUserTest(){ uService.saveUser(new User("admin", "admin",
-	 * "admin", "0")); String aEmail = "a@a.com"; User userA = new User("a", aEmail,
-	 * "a", "0"); uService.saveUser(userA);
-	 * Assertions.assertEquals(uService.getUserByEmail(aEmail).get(),userA); }
-	 */
-    
+	@Test 
+	void getUsers_shouldReturnAllUsers(){
+		List<User> listUser = new ArrayList<>();
+		User user1 = new User("toto","toto@email.com","toto","10");
+		User user2 = new User("tota","tota@email.com","toto","10");
+		User user3 = new User("tote","tote@email.com","toto","10");
+		listUser.add(user1);
+		listUser.add(user2);
+		listUser.add(user3);
+		when(uRepo.findAll()).thenReturn(listUser);
+			  
+		assertEquals(listUser,uService.getUsers()); 
+	}
+
+	@Test 
+	void getUserById_shouldReturnUser(){
+		Optional<User> userA = Optional.of(new User("a", "a@email.com","a", "0"));
+		when(uRepo.findById(5)).thenReturn(userA);
+		assertEquals("a@email.com",uService.getUserById(5).get().getEmail()); 
+	}  
+	  
 	
 	@Test
 	void getConnectionsForEmail_shouldReturnEmails() {
@@ -59,6 +74,16 @@ class UserServiceTest {
 		//THEN
 		assertEquals(3, result.size());
 	}
+	
+	@Test
+	void getConnectionsForEmail_shouldReturnNullPointerException() {
+		
+		when(uRepo.findByEmail("tutu@gmail.com")).thenReturn(null);
+
+		assertThrows(NullPointerException.class,() -> uService.getConnectionsForEmail("tutu@gmail.com"));
+	}
+	
+	
     
 
 }

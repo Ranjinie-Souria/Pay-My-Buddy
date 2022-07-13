@@ -23,10 +23,23 @@ public class InitDBConfig {
 
 	@PostConstruct
 	public void initializeDB() {
-		System.out.println("initialisation de la base de données");
+		System.out.println("Creating Database");
     	Optional<User> user = userService.getUserByEmail("admin@admin.com");
     	if(user.isEmpty()) {
+    		System.out.println("Creating Admin account");
     		UserRegistrationDto registrationDto = new UserRegistrationDto("admin", "admin@admin.com", "admin");
+    		userDetail.save(registrationDto);
+    	}
+    	Optional<User> userA = userService.getUserByEmail("a@email.com");
+    	if(userA.isEmpty()) {
+    		System.out.println("Creating User A account");
+    		UserRegistrationDto registrationDto = new UserRegistrationDto("a", "a@email.com", "a");
+    		userDetail.save(registrationDto);
+    	}
+    	Optional<User> userB = userService.getUserByEmail("b@email.com");
+    	if(userB.isEmpty()) {
+    		System.out.println("Creating User B account");
+    		UserRegistrationDto registrationDto = new UserRegistrationDto("b", "b@email.com", "b");
     		userDetail.save(registrationDto);
     	}
 	}
