@@ -1,6 +1,8 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -66,14 +68,25 @@ public class UserController {
     )
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
     	String email = registrationDto.getEmail();
-    	Optional<User> user = userService.getUserByEmail(email);
-    	if(user.isEmpty()) {
-    		userDetail.save(registrationDto);
-    		return "redirect:/login?success";
+    	String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+    	 
+    	Pattern pattern = Pattern.compile(regex);
+    	Matcher matcher = pattern.matcher(email);
+    	if(matcher.matches()){
+    	    Optional<User> user = userService.getUserByEmail(email);
+	    	if(user.isEmpty()) {
+	    		userDetail.save(registrationDto);
+	    		return "redirect:/login?success";
+	    	}
+	    	else {
+	    		return "redirect:/registration?DuplicateEmail";
+	    	}
     	}
     	else {
-    		return "redirect:/registration?DuplicateEmail";
+    		return "redirect:/registration?IncorrectEmail";
     	}
+    	
+
     	
     }
 	

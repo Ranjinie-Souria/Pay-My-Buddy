@@ -8,12 +8,13 @@
   <div class="row">
    <div class="col-md-6 col-md-offset-3">
 
+    <div th:if="${param.IncorrectEmail}">
+     <div class="alert alert-danger">This email is incorrect, please write a valid email</div><br>
+    </div>
 
-    
-    <!-- success message -->
     <div th:if="${param.DuplicateEmail}">
-     <div class="alert alert-danger">This email is already used, please log in or use another email</div>
-    </div><br>
+     <div class="alert alert-danger">This email is already used, please log in or use another email</div><br>
+    </div>
 
     <h1>Registration</h1>
 

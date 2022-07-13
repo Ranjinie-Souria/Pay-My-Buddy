@@ -18,11 +18,11 @@ import lombok.Data;
 public class BankAccountTransaction {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="idBankAccountTransaction")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idbank_account_transaction", updatable = false, nullable = false)
 	private int idBankAccountTransaction;
 	
-	@Column(name="bankAccount")
+	@Column(name="bank_account")
 	private String bankAccount;
 	
 	@Column(name="amount")
