@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -72,6 +73,15 @@ class UserControllerTest {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	            .param("username","a").param("email","a").param("password","a"))
 				.andExpect(redirectedUrl("/registration?IncorrectEmail"));
+	}
+	
+	@Test
+	@Profile("test")
+	void login_shouldLogUser() throws Exception{
+		mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	            .param("username","admin@admin.com").param("password","admin").param("ROLES", "USER"))
+				.andExpect(redirectedUrl("/"));
 	}
 	
 }
