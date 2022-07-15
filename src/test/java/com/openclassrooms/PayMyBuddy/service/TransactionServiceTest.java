@@ -1,11 +1,21 @@
 package com.openclassrooms.PayMyBuddy.service;
 
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,45 +24,49 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.openclassrooms.PayMyBuddy.model.Transaction;
 import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.repository.ConnectionRepository;
 import com.openclassrooms.PayMyBuddy.repository.TransactionRepository;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+import ch.qos.logback.core.spi.LifeCycle;
+
+@ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 	
-	@Autowired
+	@Mock
+	private UserService uService;
+	@InjectMocks
 	private TransactionService tService;
 	
-	@Autowired
-	private UserService uService;
-	
-	@MockBean
+	@Mock
     private UserRepository uRepo;
-	
-	@MockBean
+	@Mock
     private TransactionRepository tRepo;
-
-	/*
-	 * @BeforeAll public static void beforeAllTests() throws Exception{
-	 * uService.saveUser(new User("admin", "admin", "admin", "0")); String aEmail =
-	 * "a@a.com"; String bEmail = "b@b.com"; User userA = new User("a", aEmail, "a",
-	 * "0"); User userB = new User("b", bEmail, "b", "0"); uService.saveUser(userA);
-	 * uService.saveUser(userB); userA = uService.getUserByEmail(aEmail).get();
-	 * userB = uService.getUserByEmail(aEmail).get();
-	 * 
-	 * tService.makeATransaction(userA.getEmail(), userB.getEmail(), "10",
-	 * "First Transaction", userA.getIdUser());
-	 * tService.makeATransaction(userB.getEmail(), userA.getEmail(), "15",
-	 * "Second Transaction", userB.getIdUser()); }
-	 */
+	@Mock
+	private ConnectionRepository cRepo;
+	 
     
 	@Test
-	void getTransactionsForEmail() {
-		User userA = uService.getUserByEmail("a@a.com").get();
-    	List<Transaction> t = tService.getTransactionsForEmail(userA.getEmail());
-    	Assertions.assertEquals(t.size(),2);
+	void makeATransaction_shouldCreateNewTransac() {
+		User admin = new User("admin", "admin@admin.com", "a","0"); 
+		User userA = new User("a", "a@a.com", "a","0"); 
+		User userB = new User("b", "b@b.com", "b", "0");
+		admin.setIdUser(0);
+		userA.setIdUser(1);
+		userB.setIdUser(2);
+		List<User> connections = new ArrayList<User>();
+		connections.add(userB);
+		userA.setConnections(connections);
+		Transaction transac = new Transaction("b@b.com", "a@a.com", "10", "First Transaction", userA);
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		transactions.add(transac);
+		when(tRepo.findBySenderEmailOrReceiverEmail("b@b.com", "b@b.com")).thenReturn(transactions);
+		
+		when(uService.getUserByEmail("b@b.com")).thenReturn(Optional.of(userB));
+		when(uService.getUserByEmail("admin@admin.com")).thenReturn(Optional.of(admin));
+		tService.makeATransaction("a@a.com", "b@b.com", "10","First Transaction", 1);
+    	List<Transaction> t = tService.getTransactionsForEmail("b@b.com");
+    	Assertions.assertEquals(1,t.size());
 	}
 
 }

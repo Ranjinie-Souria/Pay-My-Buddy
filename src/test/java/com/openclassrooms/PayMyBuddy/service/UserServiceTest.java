@@ -1,7 +1,9 @@
 package com.openclassrooms.PayMyBuddy.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openclassrooms.PayMyBuddy.model.User;
@@ -83,7 +86,44 @@ class UserServiceTest {
 		assertThrows(NullPointerException.class,() -> uService.getConnectionsForEmail("tutu@gmail.com"));
 	}
 	
+	@Test 
+	void addConnectionForEmail_shouldContainUser(){
+		Optional<User> userA = Optional.of(new User("a", "a@email.com","a", "0"));
+		Optional<User> userB = Optional.of(new User("b", "b@email.com","b", "0"));
+		when(uRepo.findByEmail("a@email.com")).thenReturn(userA);
+		when(uRepo.findByEmail("b@email.com")).thenReturn(userB);
+		assertEquals(1,uService.addConnectionForEmail("a@email.com", "b@email.com"));
+		List<User> thisConnections = uService.getConnectionsForEmail("a@email.com");
+		
+		assertThat(thisConnections.contains(userB.get())); 
+	}  
 	
-    
+	@Test 
+	void addConnectionForEmail_shouldReturnNoElementError(){
+		when(uRepo.findByEmail("b@email.com")).thenReturn(null);
+				
+		assertEquals(2,uService.addConnectionForEmail("a@email.com", "b@email.com"));
+	}  
+	
+	@Test 
+	void addConnectionForEmail_shouldReturnSameEmailError(){
+		assertEquals(0,uService.addConnectionForEmail("a@email.com", "a@email.com"));
+	}
+	
+	@Test 
+	void addConnectionForEmail_shouldReturnUserAlreadyFriendError(){
+		Optional<User> userA = Optional.of(new User("a", "a@email.com","a", "0"));
+		Optional<User> userB = Optional.of(new User("b", "b@email.com","b", "0"));
+		List<User> thisConnections = new ArrayList<User>();
+		thisConnections.add(userB.get());
+		uService = Mockito.spy(uService);
+		when(uRepo.findByEmail("a@email.com")).thenReturn(userA);
+		when(uRepo.findByEmail("b@email.com")).thenReturn(userB);
+		doReturn(thisConnections).when(uService).getConnectionsForEmail("a@email.com");
+		
+		assertEquals(3,uService.addConnectionForEmail("a@email.com", "b@email.com"));
+	}  
+	
+	
 
 }

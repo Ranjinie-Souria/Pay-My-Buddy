@@ -28,6 +28,8 @@ public class TransactionService {
 	}
 
 	public Transaction saveTransaction(Transaction transaction) {
+		System.out.print(transaction.getSenderEmail()+transaction.getReceiverEmail()+transaction.getAmount()+transaction.getDescription()+transaction.getIdTransaction());
+
 		return transactionRepository.save(transaction);		
 	}
 	
@@ -49,7 +51,6 @@ public class TransactionService {
 			userService.setGetAmount(admin, String.valueOf(fee));
 			Transaction transaction = new Transaction(senderEmail, receiverEmail, amount, description, friend);
 			transactionRepository.save(transaction);
-		
 	}
 	
 	public List<Transaction> getTransactionsForEmail(String email) {
